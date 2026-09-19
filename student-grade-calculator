@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Grade Calculator</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eef2ff, #e0f2fe);
+}
+
+.container {
+  width: 90%;
+  max-width: 520px;
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 22px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+button {
+  border: 0;
+  padding: 12px 20px;
+  margin: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  background: #2563eb;
+  color: white;
+}
+
+.clear {
+  background: #64748b;
+}
+
+#result {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  line-height: 1.8;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Student Grade Calculator</h1>
+
+<p class="subtitle">
+Enter marks and calculate your result
+</p>
+
+<input type="text" id="name" placeholder="Student Name">
+
+<input type="number" id="m1" placeholder="Subject 1" min="0" max="100">
+<input type="number" id="m2" placeholder="Subject 2" min="0" max="100">
+<input type="number" id="m3" placeholder="Subject 3" min="0" max="100">
+<input type="number" id="m4" placeholder="Subject 4" min="0" max="100">
+<input type="number" id="m5" placeholder="Subject 5" min="0" max="100">
+
+<button onclick="calculateResult()">
+Calculate Result
+</button>
+
+<button class="clear" onclick="clearResult()">
+Clear
+</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+function calculateResult() {
+
+  const name = document.getElementById("name").value.trim();
+
+  const marks = [1,2,3,4,5].map(function(i) {
+    return Number(document.getElementById("m" + i).value);
+  });
+
+  if (!name || marks.some(function(mark) {
+    return isNaN(mark) || mark < 0 || mark > 100;
+  })) {
+    alert("Please enter the student name and valid marks from 0 to 100.");
+    return;
+  }
+
+  const total = marks.reduce(function(sum, mark) {
+    return sum + mark;
+  }, 0);
+
+  const average = total / 5;
+
+  let grade;
+
+  if (average >= 90)
+    grade = "A+";
+  else if (average >= 80)
+    grade = "A";
+  else if (average >= 70)
+    grade = "B";
+  else if (average >= 60)
+    grade = "C";
+  else if (average >= 50)
+    grade = "D";
+  else
+    grade = "F";
+
+  const status = average >= 40 ? "PASS" : "FAIL";
+
+  const result = document.getElementById("result");
+
+  result.style.display = "block";
+
+  result.innerHTML =
+    "<strong>Student:</strong> " + name +
+    "<br><strong>Total:</strong> " + total + " / 500" +
+    "<br><strong>Average:</strong> " + average.toFixed(2) + "%" +
+    "<br><strong>Grade:</strong> " + grade +
+    "<br><strong>Result:</strong> " + status;
+}
+
+function clearResult() {
+
+  document.getElementById("name").value = "";
+
+  [1,2,3,4,5].forEach(function(i) {
+    document.getElementById("m" + i).value = "";
+  });
+
+  const result = document.getElementById("result");
+
+  result.style.display = "none";
+  result.innerHTML = "";
+}
+</script>
+
+</body>
+</html>
